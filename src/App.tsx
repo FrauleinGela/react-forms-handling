@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { Header } from './common/layouts/Header/Header';
 import { FormUponSubmit } from './FormUponSubmit/FormUponSubmit';
+import { FormUponFieldChange } from './FormUponFieldChange/FormUponFieldChange';
 
 const ComponentRoute = () => {
   return (
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/upon-field-change',
-        element: <h1>Handling Forms in React</h1>,
+        element: <FormUponFieldChange />,
       },
     ],
   },

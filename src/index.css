@@ -29,12 +29,12 @@ form {
   box-shadow: 0 0 16px 1px rgba(0, 0, 0, 0.5);
 }
 
-.control,
+.form-control,
 fieldset {
   margin-bottom: 1rem;
 }
 
-.control label {
+.form-control label {
   display: block;
   font-size: 0.8rem;
   margin-bottom: 0.2rem;
@@ -43,7 +43,7 @@ fieldset {
   font-weight: bold;
 }
 
-.control input {
+.form-control input:not([type='checkbox']) {
   display: block;
   width: 100%;
   max-width: 15rem;
@@ -55,7 +55,7 @@ fieldset {
   color: #142020;
 }
 
-.control select {
+.form-control select {
   display: block;
   width: 100%;
   max-width: 15rem;
@@ -68,32 +68,34 @@ fieldset {
 }
 
 
-.control:has(input[type='checkbox']) {
+.form-control input[type='checkbox'] {
+  margin-right: 0.5rem;
+}
+
+.form-control:has(input[type='checkbox']) {
   display: flex;
-  align-items: center;
 }
-
-.control:has(input[type='checkbox']) label {
+.form-control:has(input[type='checkbox']) label {
   margin: 0;
 }
 
 
-.control-error {
+.form-control-error {
   color: #ffca99;
   font-size: 0.8rem;
   height: 2rem;
   padding: 0.5rem 0;
 }
 
-.control-error p {
+.form-control-error p {
   margin: 0;
 }
 
-.control-row {
+.form-control-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .form-actions {
@@ -107,25 +109,28 @@ button {
   font-size: 1rem;
   border-radius: 4px;
   border: none;
-  color: #8364b0;
-  background-color: white;
+  color: white;
+  background-color: #ab78e1;
   border: 0.1rem solid #8364b0;
 }
 
 button:hover,
 button:focus {
-  background-color: #8964b0;
+  color: white;
+  background-color: #9359d1;
 }
 
 button.button-flat {
   background-color: transparent;
-  color: #9cbaba;
+  color: #2f3a3a;
+  border-color: #ab78e1;
 }
 
 button.button-flat:hover,
 button.button-flat:focus {
   background-color: transparent;
-  color: #869999;
+  color: #232020;
+  border-color: #9359d1;
 }
 
 @media (prefers-color-scheme: light) {
