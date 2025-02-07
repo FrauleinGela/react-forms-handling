@@ -1,0 +1,31 @@
+#navigation a.active, #navigation a:hover {
+  text-decoration: underline !important;
+}
+
+#navigation a {
+  padding: 0.5rem;
+  text-decoration: none;
+  color: #8964b0;
+}
+
+#navigation ul {
+  background-color: white;
+  list-style: none;
+  display: flex;
+  gap: 7rem;
+  padding: 5px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+}
+
+#navigation ul {
+  padding: 1rem auto;
+}
+
+
+#navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center
+}

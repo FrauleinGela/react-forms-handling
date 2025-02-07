@@ -1,0 +1,12 @@
+header {
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 4rem;
+  background: linear-gradient(40deg, #6d00ff, #0337ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
