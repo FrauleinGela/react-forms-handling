@@ -1,23 +1,90 @@
-import { validateEmail } from '../common/utils/validation';
 import { Input } from '../common/components/Input/Input';
-import { useState } from 'react';
+import { useInput } from '../common/components/hooks/useInput';
+import { useSelectOption } from '../common/components/hooks/useSelectOption';
+import { useInputWithMultipleOption } from '../common/components/hooks/useInputMultipleOption';
+import { FormEvent } from 'react';
+import {
+  validateEmailError,
+  validateOptionsRequired,
+  validateRequired,
+} from './functions/validations';
 
 export const FormUponFieldChange = () => {
-  const [email, setEmail] = useState('');
-  const [emailDidEdit, setEmailDidEdit] = useState(false);
-  const [emailHasError, setEmailHasError] = useState(false);
+  const {
+    value: emailValue,
+    error: emailError,
+    showError: showEmailError,
+    handleInputBlur: handleEmailBlur,
+    handleInputChange: handleEmailChange,
+    validate: validateEmail,
+  } = useInput<string>('', validateEmailError);
 
-  const handleInputChange = (value: string) => {
-    setEmail(value);
-    setEmailDidEdit(false);
+  const {
+    value: confirmPasswordValue,
+    error: confirmPasswordError,
+    showError: showConfirmPasswordError,
+    handleInputBlur: handleConfirmPasswordBlur,
+    handleInputChange: handleConfirmPasswordChange,
+    validate: validateConfirmPassword,
+  } = useInput<string>('', validateEmailError);
+
+  const {
+    value: passwordValue,
+    error: passwordError,
+    showError: showPasswordError,
+    handleInputBlur: handlePasswordBlur,
+    handleInputChange: handlePasswordChange,
+    validate: validatePassword,
+  } = useInput<string>('', validateRequired);
+
+  const {
+    value: firstNameValue,
+    error: firstNameError,
+    showError: showFirstNameError,
+    handleInputBlur: handleFirstNameBlur,
+    handleInputChange: handleFirstNameChange,
+    validate: validateFirstName,
+  } = useInput<string>('', validateRequired);
+
+  const {
+    value: lastNameValue,
+    error: lastNameError,
+    showError: showLastNameError,
+    handleInputBlur: handleLastNameBlur,
+    handleInputChange: handleLastNameChange,
+    validate: validateLastName,
+  } = useInput<string>('', validateRequired);
+
+  const {
+    value: roleValue,
+    error: roleError,
+    handleInputChange: handleRoleChange,
+    showError: showRoleError,
+    validate: validateRole,
+  } = useSelectOption<string>('', validateRequired);
+
+  const {
+    value: acquisitionValue,
+    error: acquisitionError,
+    handleOnClick: handleAcquisitionChange,
+    validate: validateAcquisition,
+    showError: showAcquisitionError,
+  } = useInputWithMultipleOption({}, validateOptionsRequired);
+
+  const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (
+      validateEmail() &&
+      validatePassword() &&
+      validateConfirmPassword() &&
+      validateFirstName() &&
+      validateLastName() &&
+      validateRole() &&
+      validateAcquisition()
+    ) {
+      console.log('Form is valid');
+    }
   };
-
-  const handleInputBlur = () => {
-    setEmailDidEdit(true);
-    setEmailHasError(!validateEmail(email));
-  };
-
-  const handleOnSubmit = () => {};
 
   return (
     <>
@@ -28,9 +95,10 @@ export const FormUponFieldChange = () => {
           name='email'
           type='email'
           label='Email'
-          error={emailDidEdit && emailHasError ? 'Email is not valid' : ''}
-          onChange={(event) => handleInputChange((event.target as HTMLInputElement).value)}
-          onBlur={handleInputBlur}
+          value={emailValue}
+          error={showEmailError ? emailError : ''}
+          onChange={handleEmailChange}
+          onBlur={handleEmailBlur}
         />
 
         <div className='form-control-row'>
@@ -39,14 +107,20 @@ export const FormUponFieldChange = () => {
             name='password'
             label='Password'
             type='password'
-            error=''
+            value={passwordValue}
+            error={showPasswordError ? passwordError : ''}
+            onChange={handlePasswordChange}
+            onBlur={handlePasswordBlur}
           />
           <Input
             id='confirm-password'
             name='confirm-password'
             label='Confirm password'
             type='password'
-            error=''
+            value={confirmPasswordValue}
+            error={showConfirmPasswordError ? confirmPasswordError : ''}
+            onChange={handleConfirmPasswordChange}
+            onBlur={handleConfirmPasswordBlur}
           />
         </div>
 
@@ -56,28 +130,39 @@ export const FormUponFieldChange = () => {
             name='firstName'
             label='First name'
             type='text'
-            error=''
+            value={firstNameValue}
+            error={showFirstNameError ? firstNameError : ''}
+            onChange={handleFirstNameChange}
+            onBlur={handleFirstNameBlur}
           />
           <Input
             id='lastName'
             name='lastName'
             label='Last name'
             type='text'
-            error=''
+            value={lastNameValue}
+            error={showLastNameError ? lastNameError : ''}
+            onChange={handleLastNameChange}
+            onBlur={handleLastNameBlur}
           />
         </div>
 
         <div className='form-control'>
           <label htmlFor='role'>What describes your role </label>
-          <select name='role' id='role'>
+          <select
+            name='role'
+            id='role'
+            value={roleValue}
+            onChange={handleRoleChange}
+          >
             <option value=''></option>
             <option value='student'>Student</option>
             <option value='teacher'>Teacher</option>
             <option value='employee'>Employee</option>
           </select>
-          {/* {!formValuesValidity.role && (
-            <div className='form-control-error'>Please select a role</div>
-          )} */}
+          {showRoleError && roleError && (
+            <div className='form-control-error'>{roleError}</div>
+          )}
         </div>
         <fieldset>
           <legend>How did you find us?</legend>
@@ -87,6 +172,7 @@ export const FormUponFieldChange = () => {
               name='acquisition'
               id='google'
               value='google'
+              onClick={handleAcquisitionChange}
             />
             <label htmlFor='google'>Google</label>
           </div>
@@ -96,6 +182,7 @@ export const FormUponFieldChange = () => {
               name='acquisition'
               id='friend'
               value='friend'
+              onClick={handleAcquisitionChange}
             />
             <label htmlFor='friend'>By a friend</label>
           </div>
@@ -105,14 +192,13 @@ export const FormUponFieldChange = () => {
               name='acquisition'
               id='other'
               value='other'
+              onClick={handleAcquisitionChange}
             />
             <label htmlFor='other'>Other</label>
           </div>
-          {/* {!formValuesValidity.acquisition && (
-            <div className='form-control-error'>
-              Please select an acquisition
-            </div>
-          )} */}
+          {showAcquisitionError && acquisitionError && (
+            <div className='form-control-error'>{acquisitionError}</div>
+          )}
         </fieldset>
 
         <div className='form-actions'>
